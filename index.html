@@ -10,9 +10,23 @@
   <link rel="stylesheet" href="css/style.css">
   <!-- Load Babel -->
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <!-- Bulma library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
 </head>
 <body>
-  <div id="react-container"></div>
+  <div class="noteboard-wrap columns is-desktop">
+    <div class="column to-do">
+      <h1 class="title">To-do List</h1>
+      <div id="react-container"></div>
+    </div>
+    <div class="column wip">
+      <h1 class="title">Work in Progress</h1>
+    </div>
+    <div class="column completed">
+      <h1 class="title">Completed</h1>
+    </div>
+  </div>
   <script type="text/babel">
     var Note = React.createClass({
       getInitialState(){
@@ -22,7 +36,7 @@
       },
       componentWillMount() {
         this.style = {
-          right: this.randomBetween(0, window.innerWidth - 150, 'px'),
+          left: this.randomBetween(0, window.innerWidth / 3 - 150, 'px'),
           top: this.randomBetween(0, window.innerHeight - 150, 'px')
         }
       },
