@@ -45,6 +45,10 @@ body, .noteboard-wrap {
   box-shadow: 5px 5px 5px #79756f;
 }
 
+.note:hover {
+	cursor: pointer;
+}
+
 .note span {
   position: absolute;
   right: 10px;

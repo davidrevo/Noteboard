@@ -13,6 +13,11 @@
   <!-- Bulma library -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
   <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
+  <!-- jQuery -->
+  <script
+    src="https://code.jquery.com/jquery-2.2.4.min.js"
+	  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+	  crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="noteboard-wrap columns is-desktop">
@@ -31,13 +36,32 @@
     var Note = React.createClass({
       getInitialState(){
         return {
-          editing: false
+          editing: false,
+          pos: {
+            x: this.randomBetween(0, window.innerWidth / 3 - 150, 'px'),
+            y: this.randomBetween(0, window.innerHeight - 150, 'px')
+          },
+          dragging: false,
+          rel: null // position relative to the cursor
         }
       },
       componentWillMount() {
         this.style = {
-          left: this.randomBetween(0, window.innerWidth / 3 - 150, 'px'),
-          top: this.randomBetween(0, window.innerHeight - 150, 'px')
+          left: this.state.pos.x,
+          top: this.state.pos.y
+        }
+      },
+      componentDidUpdate: function (props, state) {
+        if (this.state.dragging && !state.dragging) {
+          document.addEventListener('mousemove', this.onMouseMove)
+          document.addEventListener('mouseup', this.onMouseUp)
+        } else if (!this.state.dragging && state.dragging) {
+          document.removeEventListener('mousemove', this.onMouseMove)
+          document.removeEventListener('mouseup', this.onMouseUp)
+        }
+        this.style = {
+          left: this.state.pos.x,
+          top: this.state.pos.y
         }
       },
       randomBetween(x, y, s) {
@@ -56,7 +80,8 @@
       renderForm(){
         return (
           <div className="note"
-               style={this.style}>
+               style={this.style}
+               onMouseDown={this.onMouseDown}>
             <textarea ref="newText"></textarea>
             <button onClick={this.save} className="edit-save">Save</button>
           </div>
@@ -65,7 +90,8 @@
       renderDisplay(){
         return (
           <div className="note"
-               style={this.style}>
+               style={this.style}
+               onMouseDown={this.onMouseDown}>
             <p>{this.props.children}</p>
             <span>
               <button onClick={this.edit}>EDIT</button>
@@ -73,6 +99,31 @@
             </span>
           </div>
         )
+      },
+      // calculate relative position to the mouse and set dragging=true
+      onMouseDown: function (e) {
+        // only left mouse button
+        if (e.button !== 0) return
+        var pos = $(ReactDOM.findDOMNode(this)).offset()
+        this.setState({
+          dragging: true,
+          rel: {
+            x: e.pageX - pos.left,
+            y: e.pageY - pos.top
+          }
+        })
+      },
+      onMouseUp: function (e) {
+        this.setState({dragging: false})
+      },
+      onMouseMove: function (e) {
+        if (!this.state.dragging) return
+        this.setState({
+          pos: {
+            x: e.pageX - this.state.rel.x,
+            y: e.pageY - this.state.rel.y
+          }
+        })
       },
       render(){
         return (this.state.editing) ? this.renderForm() : this.renderDisplay()
