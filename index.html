@@ -18,6 +18,8 @@
     src="https://code.jquery.com/jquery-2.2.4.min.js"
 	  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
 	  crossorigin="anonymous"></script>
+  <!-- fetch API -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/1.0.0/fetch.js"></script>
 </head>
 <body>
   <div class="noteboard-wrap columns is-desktop">
@@ -145,6 +147,20 @@
           notes: []
         }
       },
+      componentWillMount() {
+        if(this.props.count) {
+          var url = `https://baconipsum.com/api/?type=all-meat&sentences=${this.props.count}`
+          fetch(url)
+              .then(results => results.json())
+              .then(array => array[0])
+              .then(text => text.split('. '))
+              .then(array => array.forEach(
+                sentence =>  this.add(sentence)))
+              .catch(function(err) {
+                console.log("Didn't connect to the API", err);
+              })
+        }
+      },
       nextId() {
         this.uniqueId = this.uniqueId || 0
         return this.uniqueId++
@@ -203,7 +219,7 @@
     })
 
     ReactDOM.render(
-      <Board count={10} />,
+      <Board count={6} />,
       document.getElementById('react-container'));
   </script>
 </body>
