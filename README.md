@@ -7,5 +7,5 @@
 
 Release Notes:
 
-2018/02/24 - add draggable feature on notice
-2018/02/25 - component mount and unmount demo (mountComponent.html)
+- 2018/02/24 - add draggable feature on notice
+- 2018/02/25 - component mount and unmount demo (mountComponent.html)
