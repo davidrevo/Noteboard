@@ -69,6 +69,10 @@
           this.refs.newText.select()
         }
       },
+      // performance optimization
+      shouldComponentUpdate(nextProps, nextState) {
+        return this.props.children !== nextProps.children || this.state !== nextState
+      },
       randomBetween(x, y, s) {
         return (x + Math.ceil(Math.random() * (y-x))) + s
       },
