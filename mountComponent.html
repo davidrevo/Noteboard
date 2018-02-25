@@ -9,18 +9,19 @@
   <script src="libs/react-dom.js"></script>
   <!-- Load Babel -->
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-  <style>
-    #myDiv {
-      background-color: blue;
-      height: 200px;
-      width: 200px;
-    }
-  </style>
 </head>
 <body>
   <div id="react-container"></div>
   <script type="text/babel">
     var Box = React.createClass({
+      // initialize the props
+      getDefaultProps() {
+        return {
+          backgroundColor: 'blue',
+          height: 200,
+          width: 200
+        }
+      },
       // right before component is mounted
       componentWillMount() {
         alert('Component is about to mount.')
@@ -30,7 +31,9 @@
         alert('Component just mounted')
       },
       render() {
-        return <div id="myDiv"></div>
+        return (<div id="myDiv">
+                  <div style={this.props}></div>
+                </div>)
       }
     })
     ReactDOM.render(<Box />,
