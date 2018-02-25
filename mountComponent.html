@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Mount Component</title>
+  <script src="libs/react.js"></script>
+  <script src="libs/react-dom.js"></script>
+  <!-- Load Babel -->
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <style>
+    #myDiv {
+      background-color: blue;
+      height: 200px;
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div id="react-container"></div>
+  <script type="text/babel">
+    var Box = React.createClass({
+      // right before component is mounted
+      componentWillMount() {
+        alert('Component is about to mount.')
+      },
+      // right after component is mounted
+      componentDidMount() {
+        alert('Component just mounted')
+      },
+      render() {
+        return <div id="myDiv"></div>
+      }
+    })
+    ReactDOM.render(<Box />,
+      document.getElementById('react-container'))
+
+    var getRidOfBox = document.getElementById('myDiv')
+    getRidOfBox.onclick = function() {
+      ReactDOM.unmountComponentAtNode(document.getElementById('react-container'))
+      alert('component is unmounted')
+    }
+  </script>
+</body>
+</html>
