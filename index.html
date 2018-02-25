@@ -63,6 +63,11 @@
           left: this.state.pos.x,
           top: this.state.pos.y
         }
+
+        if(this.state.editing) {
+          this.refs.newText.focus()
+          this.refs.newText.select()
+        }
       },
       randomBetween(x, y, s) {
         return (x + Math.ceil(Math.random() * (y-x))) + s
@@ -82,7 +87,7 @@
           <div className="note"
                style={this.style}
                onMouseDown={this.onMouseDown}>
-            <textarea ref="newText"></textarea>
+            <textarea ref="newText" defaultValue={this.props.children}></textarea>
             <button onClick={this.save} className="edit-save">Save</button>
           </div>
         )
